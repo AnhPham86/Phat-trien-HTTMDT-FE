@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
-import { ContactsOutlined, LineChartOutlined, LogoutOutlined, ProductOutlined, RollbackOutlined, ShopOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import { ContactsOutlined, LogoutOutlined, ProductOutlined, RollbackOutlined, ShopOutlined, ShoppingCartOutlined, TagOutlined, UserOutlined } from '@ant-design/icons';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import './LayoutAdmin.scss';
 
@@ -54,6 +54,11 @@ function LayoutAdmin() {
                 key: '6',
                 icon: <RollbackOutlined />,
                 label: <NavLink to='manage-returns'>Trả hàng</NavLink>,
+              },
+              {
+                key: '7',
+                icon: <TagOutlined />,
+                label: <NavLink to='manage-vouchers'>Voucher</NavLink>,
               }
             ]}
           />

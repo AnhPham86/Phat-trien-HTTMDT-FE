@@ -372,6 +372,8 @@
         border-radius: 20px;
         max-width: 80%;
         word-wrap: break-word;
+        word-break: break-word;
+        white-space: pre-wrap;
         font-size: 14px;
         line-height: 1.5;
 
@@ -397,12 +399,17 @@
       border-top: 1px solid #e8e8e8;
       gap: 10px;
       background-color: #fff;
+      flex-shrink: 0;
 
       input {
         flex: 1;
         border-radius: 20px;
         padding: 10px 15px;
         border: 1px solid #d9d9d9;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       button {
@@ -410,6 +417,7 @@
         border: none;
         border-radius: 20px;
         padding: 0 20px;
+        flex-shrink: 0;
 
         &:hover {
           background-color: #40a9ff;

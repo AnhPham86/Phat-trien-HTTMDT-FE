@@ -58,9 +58,7 @@ function History() {
       render: (text) => <Image src={text} width={80} />
     },
     { title: 'Tên sản phẩm', dataIndex: 'productName', key: 'productName' },
-    { title: 'Mô tả', dataIndex: 'productDescription', key: 'productDescription' },
-    { title: 'Thương hiệu', dataIndex: 'productBrand', key: 'productBrand' },
-    { title: 'Loại', dataIndex: 'productCategory', key: 'productCategory' },
+
     { title: 'Size', dataIndex: 'productSize', key: 'productSize' },
     {
       title: 'Giá', dataIndex: 'productPrice', key: 'productPrice',

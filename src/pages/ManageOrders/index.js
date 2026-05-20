@@ -91,26 +91,10 @@ const ManageOrders = () => {
       key: "orderInfo",
       render: (_, record) => (
         <div>
-          <h4>
-            <strong>Tên sản phẩm: </strong>
-            {record.productName}
-          </h4>
-          <p>
-            <strong>Mô tả: </strong>
-            {record.productDescription}
-          </p>
-          <p>
-            <strong>Size: </strong>
-            {record.productSize}
-          </p>
-          <p>
-            <strong>Số lượng: </strong>
-            {record.productQuantity}
-          </p>
-          <p>
-            <strong>Tổng tiền:</strong>{" "}
-            {(record.productPrice * record.productQuantity).toLocaleString()} đ
-          </p>
+          <h4><strong>Tên sản phẩm: </strong>{record.productName}</h4>
+          <p><strong>Size: </strong>{record.productSize}</p>
+          <p><strong>Số lượng: </strong>{record.productQuantity}</p>
+          <p><strong>Tổng tiền:</strong> {(record.productPrice * record.productQuantity).toLocaleString()} đ</p>
         </div>
       ),
     },

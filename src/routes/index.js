@@ -13,6 +13,7 @@ import ManageUsers from "../pages/ManageUsers";
 import Register from "../pages/Register";
 import ManageOrders from "../pages/ManageOrders";
 import ManageReturns from "../pages/ManageReturns";
+import ManageVouchers from "../pages/ManageVouchers";
 import PrivateCustomer from "../pages/PrivateCustomer";
 import LoginAdmin from "../pages/LoginAdmin";
 import PrivateAdmin from "../pages/PrivateAdmin";
@@ -106,6 +107,10 @@ const routes = [
           {
             path: "manage-returns",
             element: <ManageReturns />,
+          },
+          {
+            path: "manage-vouchers",
+            element: <ManageVouchers />,
           },
         ],
       },

@@ -44,12 +44,15 @@ function LayoutDefault() {
       return;
     }
 
-    const newUserMessage = { sender: 'user', text: userInput };
+    const currentInput = userInput;
+    setUserInput(''); // Clear ngay lập tức
+
+    const newUserMessage = { sender: 'user', text: currentInput };
     setChatMessages(prevMessages => [...prevMessages, newUserMessage]);
 
     try {
       const response = await axios.post('http://localhost:8080/chatbot/message', null, {
-        params: { message: userInput },
+        params: { message: currentInput },
       });
 
       const botResponse = response.data.data;
@@ -58,8 +61,6 @@ function LayoutDefault() {
       console.error('Error calling chatbot API:', error);
       setChatMessages(prevMessages => [...prevMessages, { sender: 'bot', text: 'Có lỗi xảy ra, vui lòng thử lại sau!' }]);
     }
-
-    setUserInput('');
   };
 
   return (
@@ -72,9 +73,6 @@ function LayoutDefault() {
           <NavLink to='/'>Trang chủ</NavLink>
           <NavLink to='/introduce'>Giới thiệu</NavLink>
           <NavLink to='/contact'>Liên hệ</NavLink>
-          <NavLink to='/admin' className='header__admin-link'>
-            <SettingOutlined /> Admin
-          </NavLink>
         </div>
         <div className='header__action animate__animated animate__fadeInRight'>
           <div className='header__cart'>

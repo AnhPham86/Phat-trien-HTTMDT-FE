@@ -9,7 +9,20 @@ const { Option } = Select;
 
 const QuickOrderModal = ({ open, onClose, product, user, onSuccess, onError }) => {
   const [shippingFee, setShippingFee] = useState(30000);
+  const [vouchers, setVouchers] = useState([]);
+  const [selectedVoucher, setSelectedVoucher] = useState(null);
   const id = sessionStorage.getItem('id');
+
+  // Load voucher khi modal mở
+  React.useEffect(() => {
+    if (open && product?.price) {
+      const total = product.price + shippingFee;
+      fetch(`/voucher/user/available?orderAmount=${total}`)
+        .then(r => r.json())
+        .then(d => setVouchers(d.data || []));
+      setSelectedVoucher(null);
+    }
+  }, [open, product]);
 
   const handleShippingChange = (value) => {
     setShippingFee(value === "Giao tận nơi" ? 30000 : 0);
@@ -26,6 +39,7 @@ const QuickOrderModal = ({ open, onClose, product, user, onSuccess, onError }) =
         const orderPayload = {
           ...values,
           userId: id,
+          voucherId: selectedVoucher?.id || null,
           orderItemRequests: [{
             productId: product.id,
             size: product.size,
@@ -119,8 +133,34 @@ const QuickOrderModal = ({ open, onClose, product, user, onSuccess, onError }) =
                 </div>
               </div>
               <p><strong>Phí vận chuyển:</strong> {shippingFee.toLocaleString()} đ</p>
-              <p><strong>Tổng cộng:</strong> {((product?.price || 0) + shippingFee).toLocaleString()} đ</p>
+              <p><strong>Giảm giá voucher:</strong> <span style={{color:'red'}}>-{(selectedVoucher?.discountAmount || 0).toLocaleString()} đ</span></p>
+              <p><strong>Tổng cộng:</strong> {((product?.price || 0) + shippingFee - (selectedVoucher?.discountAmount || 0)).toLocaleString()} đ</p>
               <Divider />
+              {vouchers.length > 0 && (
+                <div style={{ marginBottom: 12 }}>
+                  <p><strong>Chọn voucher:</strong></p>
+                  <Select
+                    style={{ width: '100%' }}
+                    placeholder="-- Chọn voucher giảm giá --"
+                    allowClear
+                    onChange={(val) => {
+                      if (!val) { setSelectedVoucher(null); return; }
+                      setSelectedVoucher(vouchers.find(v => v.id === val) || null);
+                    }}
+                    value={selectedVoucher?.id || undefined}
+                  >
+                    {vouchers.map(v => (
+                      <Option key={v.id} value={v.id} disabled={!v.canUse}>
+                        <span style={{ fontWeight: 'bold', color: v.canUse ? '#1890ff' : '#aaa', marginRight: 8 }}>{v.code}</span>
+                        <span style={{ color: '#666', fontSize: 12 }}>{v.description}</span>
+                        {!v.canUse && <span style={{ color: '#ff4d4f', fontSize: 11, marginLeft: 8 }}>(Đơn tối thiểu {v.minOrderAmount?.toLocaleString()}đ)</span>}
+                        <span style={{ float: 'right', color: v.canUse ? 'red' : '#aaa', fontWeight: 'bold' }}>-{v.discountAmount?.toLocaleString()}đ</span>
+                      </Option>
+                    ))}
+                  </Select>
+                </div>
+              )}
+              {vouchers.length === 0 && <p style={{color:'#aaa', fontSize:12, marginBottom: 12}}>Không có voucher khả dụng</p>}
               <Form.Item name="shippingMethod" label="Hình thức giao nhận" rules={[{ required: true }]}>
                 <Select onChange={handleShippingChange}>
                   <Option value="Giao tận nơi">Giao tận nơi</Option>
